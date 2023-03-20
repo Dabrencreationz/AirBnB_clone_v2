@@ -118,10 +118,32 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        argslist = args.split()
+        clsname = argslist[0]
+        kwargs = {}
+        for param in argslist[1:]:
+            key_value = parse(param)
+            if len(key_value) == 2:
+                key, value = key_value
+                if value.startswith('"') and value.endswith('"'):
+                    value = value.strip('"')
+                    kwargs[key] = value
+                elif value.isdigit():
+                    value = int(value)
+                    kwargs[key] = value
+                else:
+                    try:
+                        value = float(value)
+                        kwargs[key] = value
+                    except (ValueError, TypeError):
+                        pass
+
+        if clsname not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[clsname]()
+        for key, value in kwargs.items():
+            new_instance.__dict__[key] = value
         storage.save()
         print(new_instance.id)
         storage.save()
@@ -319,6 +341,14 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+def parse(strip):
+    """
+Returns the key and value from a string with the following format:
+    name="Timothy" => ("name", "Timothy")
+    """
+    parsed_arr = strip.split("=")
+    return tuple(parsed_arr)
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
