@@ -126,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
             if len(key_value) == 2:
                 key, value = key_value
                 if value.startswith('"') and value.endswith('"'):
-                    value = value.strip('"')
+                    value = value.strip('"').replace('_', ' ')
                     kwargs[key] = value
                 elif value.isdigit():
                     value = int(value)
