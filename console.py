@@ -3,7 +3,7 @@
 import cmd
 import sys
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models.__init__ import storage, storage_type
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -209,7 +209,10 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            if storage_type == "db":
+                storage.delete(storage.all()[key])
+            else:
+                del(storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
