@@ -28,7 +28,8 @@ class DBStorage:
                 }
 
     __classes = {
-            'State': State, 'City': City, 'User': User, 'Place': Place
+            'State': State, 'City': City, 'User': User, 'Place': Place,
+            'Review': Review
                 }
 
     def __init__(self):
