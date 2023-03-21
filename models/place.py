@@ -2,6 +2,7 @@
 """ holds class Place"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
+from sqlalchemy.orm import relationship
 
 class Place(BaseModel, Base):
     """Representation of Place """
@@ -21,3 +22,15 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     amenity_ids = []
+
+    reviews = relationship('Review', backref='place',
+                           cascade='all, delete-orphan')
+
+    @property
+    def reviews(self):
+        """
+        Getter of all review linked to Place instance
+        """
+        review_objs = [value for value in storage.all(Review).values()
+                       if value.place_id == self.id]
+        return review_objs
