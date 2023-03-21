@@ -59,5 +59,5 @@ class FileStorage:
         """to delete obj from __objects if it’s inside"""
         if obj is not None and obj in FileStorage.__objects.values():
             obj_id = obj.to_dict()['__class__'] + '.' + obj.id
-            del FileStorage.__objects[obj_id]
+            FileStorage.__objects.pop(obj_id)
             self.save()
