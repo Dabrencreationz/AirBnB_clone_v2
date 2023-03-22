@@ -3,8 +3,11 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.place import Place
-from models.review import Review
+import models.place as place
+import models.review as review
+
+Place = place.Place
+Review = place.Review
 
 
 class User(BaseModel, Base):

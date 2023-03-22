@@ -3,6 +3,8 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+import models
+from models.city import City
 
 
 class State(BaseModel, Base):
@@ -19,6 +21,6 @@ class State(BaseModel, Base):
         """
         Getter for cities associated with state
         """
-        city_objs = [value for value in storage.all(City).values()
+        city_objs = [value for value in models.storage.all(City).values()
                      if value.state_id == self.id]
         return city_objs

@@ -212,7 +212,7 @@ class HBNBCommand(cmd.Cmd):
             if storage_type == "db":
                 storage.delete(storage.all()[key])
             else:
-                del(storage.all()[key])
+                del storage.all()[key]
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -248,7 +248,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -345,6 +345,7 @@ class HBNBCommand(cmd.Cmd):
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
 
+
 def parse(strip):
     """
 Returns the key and value from a string with the following format:
@@ -352,6 +353,7 @@ Returns the key and value from a string with the following format:
     """
     parsed_arr = strip.split("=")
     return tuple(parsed_arr)
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

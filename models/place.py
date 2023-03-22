@@ -4,6 +4,15 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, Integer, Float, Table, ForeignKey
 from sqlalchemy.orm import relationship
 from models.review import Review
+from models.amenity import Amenity
+import models
+
+place_amenity = Table('place_amenity', Base.metadata,
+                      Column('place_id', String(60), ForeignKey('places.id'),
+                             primary_key=True),
+                      Column('amenity_id', String(60),
+                             ForeignKey('amenities.id'), primary_key=True))
+
 
 class Place(BaseModel, Base):
     """Representation of Place """
@@ -35,3 +44,21 @@ class Place(BaseModel, Base):
         review_objs = [value for value in storage.all(Review).values()
                        if value.place_id == self.id]
         return review_objs
+
+    amenities = relationship("Amenity", secondary=place_amenity,
+                             viewonly=False, backref="place_amenities")
+
+    @property
+    def amenities(self):
+        values_amenity = models.storage.all(Amenity).values()
+        list_amenity = []
+        for amenity_id in self.amenity_ids:
+            for amenity in values_amenity:
+                if amenity.id == amenity_id:
+                    list_amenity.append(amenity)
+        return list_amenity
+
+    @amenities.setter
+    def amenities(self, obj):
+        if isinstance(obj, Amenity):
+            self.amenity_ids.append(obj.id)
