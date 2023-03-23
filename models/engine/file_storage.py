@@ -14,7 +14,7 @@ class FileStorage:
             return {
                     key: obj for key,
                     obj in FileStorage.__objects.items()
-                    if obj.to_dict()['__class__'] == type(obj).__name__
+                    if cls.__name__ == type(obj).__name__
                     }
         return FileStorage.__objects
 
