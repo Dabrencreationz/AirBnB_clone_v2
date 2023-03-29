@@ -63,6 +63,7 @@ mysql+mysqldb://{}:{}@{}/{}".format(env["user"], env["passwd"], env["host"],
 
     def save(self):
         """commits all changes of the current database session"""
+        print(self.__session.new)
         self.__session.commit()
 
     def delete(self, obj=None):
